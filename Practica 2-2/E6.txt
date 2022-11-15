@@ -1,0 +1,18 @@
+usuario_vms@portatil:~/Descargas/Practica 2-2$ umask
+0022
+
+usuario_vms@portatil:~/Descargas/Practica 2-2$ umask 750
+usuario_vms@portatil:~/Descargas/Practica 2-2$ umask
+0750
+usuario_vms@portatil:~/Descargas/Practica 2-2$ mkdir aaaaa
+usuario_vms@portatil:~/Descargas/Practica 2-2$ ls
+aaaa  aaaaa  E1.txt  E2.txt  E3.txt  E4.txt  E5.c  E6.txt  prueba.txt
+usuario_vms@portatil:~/Descargas/Practica 2-2$ touch aaaatxt
+usuario_vms@portatil:~/Descargas/Practica 2-2$ touch aaaa.txt
+usuario_vms@portatil:~/Descargas/Practica 2-2$ ls
+aaaa  aaaaa  aaaa.txt  E1.txt  E2.txt  E3.txt  E4.txt  E5.c  E6.txt  prueba.txt
+usuario_vms@portatil:~/Descargas/Practica 2-2$ cd aaaaa/
+bash: cd: aaaaa/: Permiso denegado
+
+desde el explorador de archivos no puedo ni abrir el directorio ni el archivo
+ 

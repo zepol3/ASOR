@@ -7,7 +7,9 @@
 
 int main(){
 
-    int file = open("prueba5.txt", O_CREAT| O_RDWR | O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH|S_IXOTH);
+    umask(S_IWGRP | S_IXOTH);
+
+    int file = open("prueba7.txt", O_CREAT| O_RDWR | O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH|S_IXOTH);
     
     if(file == -1){
         perror("Fallo");
