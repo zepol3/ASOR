@@ -1,0 +1,4 @@
+directorio /Descargas->		drwxr-xr-x 2 usuario_vms users 4096 nov 15 12:52 .
+directorio /home->		drwxr-xr-x 38 usuario_vms users 4096 nov 15 12:53 .
+directorio /Descargas/prueba->	drwxr-xr-x 2 usuario_vms users 4096 nov 15 12:56 .
+

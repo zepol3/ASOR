@@ -1,0 +1,15 @@
+usuario_vms@portatil:~/Descargas$ chmod 540 prueba
+usuario_vms@portatil:~/Descargas$ cd prueba/
+usuario_vms@portatil:~/Descargas/prueba$ ls -ld
+dr-xr----- 2 usuario_vms users 4096 nov 15 12:56 .
+
+
+       The  format of a symbolic mode is [ugoa...][[-+=][perms...]...], where perms is either zero or
+       more letters from the set rwxXst, or a single letter from  the  set  ugo.   Multiple  symbolic
+       modes can be given, separated by commas.
+
+$ chmod -rwx archivo
+$ chmod +rwx archivo
+
+$ chmod =r archivo
+

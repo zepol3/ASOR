@@ -1,0 +1,3 @@
+usuario_vms@portatil:~/Descargas$ chmod =rw prueba/
+usuario_vms@portatil:~/Descargas$ cd prueba/
+bash: cd: prueba/: Permiso denegado

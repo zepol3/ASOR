@@ -1,0 +1,34 @@
+LS(1)                                       User Commands                                       LS(1)
+
+NAME
+       ls - list directory contents
+
+SYNOPSIS
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION
+       List  information about the FILEs (the current directory by default).  Sort entries alphabeti‐
+       cally if none of -cftuvSUX nor --sort is specified.
+
+       Mandatory arguments to long options are mandatory for short options too.
+
+	-a, --all
+              do not ignore entries starting with .
+	-d, --directory
+              list directories themselves, not their contents
+	--color[=WHEN]
+              colorize the output; WHEN can be 'always' (default if  omitted),  'auto',  or  'never';
+              more info below
+	-f     do not sort, enable -aU, disable -ls --color
+
+	-F, --classify
+              append indicator (one of */=>@|) to entries
+	-h, --human-readable
+              with -l and -s, print sizes like 1K 234M 2G etc.
+
+	-i, --inode
+              print the index number of each file
+	-R, --recursive
+              list subdirectories recursively
+	-l     use a long listing format
+	-1     list one file per line.  Avoid '\n' with -q or -b
