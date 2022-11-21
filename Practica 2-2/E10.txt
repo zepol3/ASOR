@@ -1,0 +1,163 @@
+    LN(1)                             User Commands                            LN(1)
+
+NAME
+       ln - make links between files
+
+SYNOPSIS
+       ln [OPTION]... [-T] TARGET LINK_NAME
+       ln [OPTION]... TARGET
+       ln [OPTION]... TARGET... DIRECTORY
+       ln [OPTION]... -t DIRECTORY TARGET...
+
+DESCRIPTION
+       In the 1st form, create a link to TARGET with the name LINK_NAME.  In the
+       2nd form, create a link to TARGET in the current directory.  In  the  3rd
+       and  4th  forms,  create  links to each TARGET in DIRECTORY.  Create hard
+       links by default, symbolic links with --symbolic.  By default, each  des‐
+       tination (name of new link) should not already exist.  When creating hard
+       links, each TARGET must exist.  Symbolic links can hold  arbitrary  text;
+       if later resolved, a relative link is interpreted in relation to its par‐
+       ent directory.
+
+       Mandatory arguments to long options are mandatory for short options too.   
+        
+        
+        
+        -s, --symbolic
+              make symbolic links instead of hard links
+
+
+
+output
+
+ENLACE SIMBOLICO A FICHERO
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ ln -s E10.txt E110
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ ls -l
+total 36
+-rw-r--r-- 1 alvaro alvaro 1200 Nov 21 10:23 E1.txt
+lrwxrwxrwx 1 alvaro alvaro    3 Nov 21 11:08 E10 -> E10
+-rw-r--r-- 1 alvaro alvaro    0 Nov 21 11:06 E10.txt
+lrwxrwxrwx 1 alvaro alvaro    7 Nov 21 11:10 E110 -> E10.txt
+-rw-r--r-- 1 alvaro alvaro  235 Nov 21 10:23 E2.txt
+-rw-r--r-- 1 alvaro alvaro  528 Nov 21 10:23 E3.txt
+-rw-r--r-- 1 alvaro alvaro  136 Nov 21 10:23 E4.txt
+-rw-r--r-- 1 alvaro alvaro  432 Nov 21 10:23 E5.c
+-rw-r--r-- 1 alvaro alvaro  874 Nov 21 10:42 E6.txt
+-rw-r--r-- 1 alvaro alvaro  465 Nov 21 10:23 E7.c
+-rw-r--r-- 1 alvaro alvaro 3888 Nov 21 10:25 E8.txt
+-rw-r--r-- 1 alvaro alvaro 1191 Nov 21 10:44 E9.c
+
+
+
+ENLACE SIMBOLICO A DIRECTORIO
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ mkdir prueba
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ ln -s prueba E120
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ ls -l
+total 40
+-rw-r--r-- 1 alvaro alvaro 1200 Nov 21 10:23 E1.txt
+lrwxrwxrwx 1 alvaro alvaro    3 Nov 21 11:08 E10 -> E10
+-rw-r--r-- 1 alvaro alvaro    0 Nov 21 11:06 E10.txt
+lrwxrwxrwx 1 alvaro alvaro    7 Nov 21 11:10 E110 -> E10.txt
+lrwxrwxrwx 1 alvaro alvaro    6 Nov 21 11:12 E120 -> prueba
+-rw-r--r-- 1 alvaro alvaro  235 Nov 21 10:23 E2.txt
+-rw-r--r-- 1 alvaro alvaro  528 Nov 21 10:23 E3.txt
+-rw-r--r-- 1 alvaro alvaro  136 Nov 21 10:23 E4.txt
+-rw-r--r-- 1 alvaro alvaro  432 Nov 21 10:23 E5.c
+-rw-r--r-- 1 alvaro alvaro  874 Nov 21 10:42 E6.txt
+-rw-r--r-- 1 alvaro alvaro  465 Nov 21 10:23 E7.c
+-rw-r--r-- 1 alvaro alvaro 3888 Nov 21 10:25 E8.txt
+-rw-r--r-- 1 alvaro alvaro 1191 Nov 21 10:44 E9.c
+drwxr-xr-x 2 alvaro alvaro 4096 Nov 21 11:12 prueba
+
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ ls -i
+40141 E1.txt   10738 E110    40143 E3.txt  40146 E6.txt  40149 E9.c
+10737 E10      10740 E120    40144 E4.txt  40147 E7.c    10739 prueba
+10736 E10.txt  40142 E2.txt  40145 E5.c    40148 E8.txt
+
+
+INODOS
+
+    FICHERO->
+        alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ stat E10.txt
+            File: E10.txt
+            Size: 0               Blocks: 0          IO Block: 4096   regular empty file
+            Device: 810h/2064d      Inode: 10736       Links: 1
+            Access: (0644/-rw-r--r--)  Uid: ( 1000/  alvaro)   Gid: ( 1000/  alvaro)
+            Access: 2022-11-21 11:06:06.935815300 +0100
+            Modify: 2022-11-21 11:06:06.755815300 +0100
+            Change: 2022-11-21 11:06:06.755815300 +0100
+            Birth: -
+    ENLACE AL FICHERO->
+        alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ stat E110
+            File: E110 -> E10.txt
+            Size: 7               Blocks: 0          IO Block: 4096   symbolic link
+            Device: 810h/2064d      Inode: 10738       Links: 1
+            Access: (0777/lrwxrwxrwx)  Uid: ( 1000/  alvaro)   Gid: ( 1000/  alvaro)
+            Access: 2022-11-21 11:10:14.775815300 +0100
+            Modify: 2022-11-21 11:10:10.395815300 +0100
+            Change: 2022-11-21 11:10:10.395815300 +0100
+            Birth: -
+    
+    DIRECTORIO->
+        alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ stat prueba/
+            File: prueba/
+            Size: 4096            Blocks: 8          IO Block: 4096   directory
+            Device: 810h/2064d      Inode: 10739       Links: 2
+            Access: (0755/drwxr-xr-x)  Uid: ( 1000/  alvaro)   Gid: ( 1000/  alvaro)
+            Access: 2022-11-21 11:13:55.185815300 +0100
+            Modify: 2022-11-21 11:12:06.365815300 +0100
+            Change: 2022-11-21 11:12:06.365815300 +0100
+            Birth: -
+    ENLACE AL DIRECTORIO->
+        alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ stat E120
+            File: E120 -> prueba
+            Size: 6               Blocks: 0          IO Block: 4096   symbolic link
+            Device: 810h/2064d      Inode: 10740       Links: 1
+            Access: (0777/lrwxrwxrwx)  Uid: ( 1000/  alvaro)   Gid: ( 1000/  alvaro)
+            Access: 2022-11-21 11:12:23.505815300 +0100
+            Modify: 2022-11-21 11:12:18.765815300 +0100
+            Change: 2022-11-21 11:12:18.765815300 +0100
+            Birth: -
+
+
+
+ENLACE RIGIDO A FICHERO
+    alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ ln E10.txt E130
+    alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ ls -l
+        total 56
+        -rw-r--r-- 1 alvaro alvaro 1200 Nov 21 10:23 E1.txt
+        lrwxrwxrwx 1 alvaro alvaro    3 Nov 21 11:08 E10 -> E10
+        -rw-r--r-- 2 alvaro alvaro 5343 Nov 21 11:19 E10.txt
+        lrwxrwxrwx 1 alvaro alvaro    7 Nov 21 11:10 E110 -> E10.txt
+        lrwxrwxrwx 1 alvaro alvaro    6 Nov 21 11:12 E120 -> prueba
+        -rw-r--r-- 2 alvaro alvaro 5343 Nov 21 11:19 E130
+        -rw-r--r-- 1 alvaro alvaro  235 Nov 21 10:23 E2.txt
+        -rw-r--r-- 1 alvaro alvaro  528 Nov 21 10:23 E3.txt
+        -rw-r--r-- 1 alvaro alvaro  136 Nov 21 10:23 E4.txt
+        -rw-r--r-- 1 alvaro alvaro  432 Nov 21 10:23 E5.c
+        -rw-r--r-- 1 alvaro alvaro  874 Nov 21 10:42 E6.txt
+        -rw-r--r-- 1 alvaro alvaro  465 Nov 21 10:23 E7.c
+        -rw-r--r-- 1 alvaro alvaro 3888 Nov 21 10:25 E8.txt
+        -rw-r--r-- 1 alvaro alvaro 1191 Nov 21 10:44 E9.c
+        drwxr-xr-x 2 alvaro alvaro 4096 Nov 21 11:12 prueba
+    
+    alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ stat E130
+        File: E130
+        Size: 5343            Blocks: 16         IO Block: 4096   regular file
+        Device: 810h/2064d      Inode: 10736       Links: 2
+        Access: (0644/-rw-r--r--)  Uid: ( 1000/  alvaro)   Gid: ( 1000/  alvaro)
+        Access: 2022-11-21 11:19:19.335815300 +0100
+        Modify: 2022-11-21 11:19:19.165815300 +0100
+        Change: 2022-11-21 11:21:03.735815300 +0100
+        Birth: -
+
+    alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-2$ ls -i
+        40141 E1.txt   10738 E110  40142 E2.txt  40145 E5.c    40148 E8.txt
+        10737 E10      10740 E120  40143 E3.txt  40146 E6.txt  40149 E9.c
+        10736 E10.txt  10736 E130  40144 E4.txt  40147 E7.c    10739 prueba
+
+ENLACE RIGIDO A DIRECTORIO NO DEJA
+
+
+SI BORRAMOS LOS ENLACES YA SEAN RIGIDOS O SIMBOLICOS SE ELIMINA EL ARCHIVO DEL ENLACE Y YA esta
+Si borramos el archivo original, los enlaces no se destruyen pero no seran utiles
