@@ -1,0 +1,109 @@
+alvaro@PORTATIL-ALVARO:~$ ls -i
+40074 prueba           
+
+
+
+
+STAT(1)                                             User Commands                                             STAT(1)
+
+NAME
+       stat - display file or file system status
+
+SYNOPSIS
+       stat [OPTION]... FILE...
+
+DESCRIPTION
+       Display file or file system status.
+
+       Mandatory arguments to long options are mandatory for short options too.
+
+       -L, --dereference
+              follow links
+
+       -f, --file-system
+              display file system status instead of file status
+
+       -c  --format=FORMAT
+              use the specified FORMAT instead of the default; output a newline after each use of FORMAT
+
+       --printf=FORMAT
+              like  --format, but interpret backslash escapes, and do not output a mandatory trailing newline; if you
+              want a newline, include \n in FORMAT
+
+       -t, --terse
+              print the information in terse form
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       The valid format sequences for files (without --file-system):
+
+       %a     access rights in octal (note '#' and '0' printf flags)
+
+       %A     access rights in human readable form
+
+       %b     number of blocks allocated (see %B)
+
+       %B     the size in bytes of each block reported by %b
+       
+       %C     SELinux security context string
+
+       %d     device number in decimal
+
+       %D     device number in hex
+
+       %f     raw mode in hex
+
+       %F     file type
+
+       %g     group ID of owner
+
+       %G     group name of owner
+
+       %h     number of hard links
+
+       %i     inode number
+
+       %m     mount point
+
+       %n     file name
+
+       %N     quoted file name with dereference if symbolic link
+
+       %o     optimal I/O transfer size hint
+
+       %s     total size, in bytes
+
+       %t     major device type in hex, for character/block device special files
+
+       %T     minor device type in hex, for character/block device special files
+
+       %u     user ID of owner
+
+       %U     user name of owner
+
+       %w     time of file birth, human-readable; - if unknown
+
+       %W     time of file birth, seconds since Epoch; 0 if unknown
+
+       %x     time of last access, human-readable
+
+       %X     time of last access, seconds since Epoch
+
+
+
+
+
+
+       output
+       alvaro@PORTATIL-ALVARO:~$ stat E8.txt
+            File: E8.txt
+            Size: 885             Blocks: 8          IO Block: 4096   regular file
+            Device: 810h/2064d      Inode: 40079       Links: 1
+            Access: (0644/-rw-r--r--)  Uid: ( 1000/  alvaro)   Gid: ( 1000/  alvaro)
+            Access: 2022-11-21 09:34:21.710950200 +0100
+            Modify: 2022-11-21 09:34:50.630950200 +0100
+            Change: 2022-11-21 09:34:50.630950200 +0100
+            Birth: -
