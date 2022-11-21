@@ -20,12 +20,12 @@ int main(){
     }
 
     if(fstat(file, &buff) == -1){
-        perror("No se han conseguido obtener los atributos")
+        perror("No se han conseguido obtener los atributos");
     }
     else{
         printf("Major: %d\n", major(buff.st_dev));
         printf("Minor: %d\n", minor(buff.st_dev));
-        printf("Inode: %d\n", buff.st_ino);
+        printf("Inode: %ld\n", buff.st_ino);
 
         char *tipo;
 
@@ -42,8 +42,10 @@ int main(){
         }
         printf("Modo: %s\n", tipo);
 
-        printf("Last file modification:   %s", ctime(&sb.st_mtime));
-        printf("Last status change:       %s", ctime(&sb.st_ctime));
+        printf("Last file modification:   %s", ctime(&buff.st_mtime));
+        printf("Last status change:       %s", ctime(&buff.st_ctime));
     }
 
+    close(file);
+    return 0;
 }

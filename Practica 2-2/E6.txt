@@ -15,4 +15,6 @@ usuario_vms@portatil:~/Descargas/Practica 2-2$ cd aaaaa/
 bash: cd: aaaaa/: Permiso denegado
 
 desde el explorador de archivos no puedo ni abrir el directorio ni el archivo
+
+esta mal umask es la resta de 777- umask nos da los permisos que queremos
  
