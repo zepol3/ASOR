@@ -11,7 +11,7 @@ int main(int argc,char **argv){
     
     char buff[1024];
     struct flock lock;
-    time_t time;
+    time_t tiempo;
     struct tm *tm;
 
     if(argc != 2){
@@ -36,7 +36,7 @@ int main(int argc,char **argv){
         return -1;
     }
 
-    printf("cerrojo creado correctamente");
+    printf("cerrojo creado correctamente\n");
 
     if(lock.l_type == F_UNLCK){
         lock.l_type = F_WRLCK;
@@ -55,15 +55,16 @@ int main(int argc,char **argv){
             return -1;
         }
 
-        printf("cerrojo acrivado correctamente");
+        printf("cerrojo acrivado correctamente\n");
 
-        time = time(NULL);
-        tm = localtime(&time);
+        tiempo = time(NULL);
+        tm = localtime(&tiempo);
         strftime( buff, sizeof(buff), "Fecha actual: %d/%m/%Y %H:%M:%S\n", tm);
+        printf("Fecha actual: %s\n", buff);
         write(file, &buff, strlen(buff));
         sleep(10);
 
-        lock.l_type = F_UNLUCK;
+        lock.l_type = F_UNLCK;
 
         if (fcntl(file, F_SETLKW, &lock) == -1){
             /*
@@ -75,7 +76,7 @@ int main(int argc,char **argv){
             return -1;
         }
         else{
-            printf("cerrojo liberado correctamente, voy a dormir");
+            printf("cerrojo liberado correctamente, voy a dormir\n");
             sleep(10);
             close(file);
         }
@@ -87,3 +88,88 @@ int main(int argc,char **argv){
     }
     return 0;
 }
+/*
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <time.h>
+#include <string.h>
+
+int main(int argc, char ** argv) {
+
+
+  if (argc < 2) {
+     printf("ERROR: Se debe especeficar la ruta del archivo en los parámetros del programa.\n");
+     return -1;
+  }
+
+  int fd = open(argv[1], O_CREAT | O_RDWR, 00777);
+  if (fd == -1) {
+    printf("ERROR: No se ha podido abrir/crear el fichero.\n");
+    return -1;
+  }
+
+  struct flock lock;
+
+  lock.l_type = F_UNLCK;
+  lock.l_whence = SEEK_SET;
+  lock.l_start = 0;
+  lock.l_len = 0;
+  lock.l_pid = getpid();
+
+
+  int status = fcntl(fd, F_GETLK, &lock);
+
+  if (lock.l_type == F_UNLCK) {
+    printf("STATUS: Cerrojo desbloqueado.\n");
+    lock.l_type = F_WRLCK;
+    lock.l_whence = SEEK_SET;
+    lock.l_start = 0;
+    lock.l_len = 0;
+    lock.l_pid = getpid();
+
+    if (fcntl(fd, F_GETLK, &lock) == -1) {
+      printf("ERROR:No se ha podido crear el cerrojo.\n");
+      close(fd);
+      return 1;
+    } else {
+      printf("STATUS: Creado cerrojo de escritura\n");
+
+      //Write Date
+      time_t tim = time(NULL);
+
+      struct tm *tm = localtime(&tim);
+
+      char buffer[1024];
+
+      sprintf (buffer, "Hora: %d:%d\n", tm->tm_hour, tm->tm_min);
+
+      write(fd, &buffer, strlen(buffer));
+
+
+      sleep(30);
+
+      lock.l_type = F_WRLCK;
+      lock.l_whence = SEEK_SET;
+      lock.l_start = 0;
+      lock.l_len = 0;
+      lock.l_pid = getpid();
+      
+      if (fcntl(fd, F_GETLK, &lock) == -1) {
+        printf("ERROR:No se ha podido crear el cerrojo.\n");
+        close(fd);
+        return 1;
+      } else
+      close(fd);
+    }
+
+  } else {
+    printf("STATUS: Cerrojo bloqueado.\n");
+    close(fd);
+    return 1;
+  }
+
+  close(fd);
+
+
+}*/
