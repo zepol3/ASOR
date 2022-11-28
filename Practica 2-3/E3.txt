@@ -1,0 +1,14 @@
+
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-3$ sudo nice -n-10 /bin/sh
+# echo $$
+9883
+# chrt -f -p 12 9883
+# gcc -o E2 E2.c
+# ./E2
+Politica: FIFO
+min: 1
+max: 1
+priority: -10
+
+prioridad: -10
+si, en fork() se heredan los atributos de planificacion
