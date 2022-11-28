@@ -1,0 +1,68 @@
+NICE(1)                           User Commands                          NICE(1)
+
+NAME
+       nice - run a program with modified scheduling priority
+
+SYNOPSIS
+       nice [OPTION] [COMMAND [ARG]...]
+
+DESCRIPTION
+       Run  COMMAND with an adjusted niceness, which affects process scheduling.
+       With no COMMAND, print the current niceness.  Niceness values range  from
+       -20  (most  favorable  to  the  process)  to  19  (least favorable to the
+       process).
+
+       Mandatory arguments to long options are mandatory for short options too.
+
+       -n, --adjustment=N
+              add integer N to the niceness (default 10)
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+
+RENICE(1)                         User Commands                        RENICE(1)
+
+NAME
+       renice - alter priority of running processes
+
+SYNOPSIS
+       renice [-n] priority [-g|-p|-u] identifier...
+
+DESCRIPTION
+       renice  alters  the scheduling priority of one or more running processes.
+       The first argument is the priority value to be used.  The other arguments
+       are interpreted as process IDs (by default), process group IDs, user IDs,
+       or user names.  renice'ing a process group causes all  processes  in  the
+       process  group  to  have their scheduling priority altered.  renice'ing a
+       user causes all processes owned by the user to have their scheduling pri‐
+       ority altered.
+
+OPTIONS
+       -n, --priority priority
+              Specify  the  scheduling  priority  to  be  used  for the process,
+              process group, or user.  Use of the option -n or --priority is op‐
+              tional, but when used it must be the first argument.
+
+       -g, --pgrp
+              Interpret the succeeding arguments as process group IDs.
+
+       -p, --pid
+              Interpret the succeeding arguments as process IDs (the default).
+
+       -u, --user
+              Interpret the succeeding arguments as usernames or UIDs.
+
+       -V, --version
+              Display version information and exit.
+
+       -h, --help
+              Display help text and exit.
+
+
+
+
+SCHED_FIFO: Política de tiempo real FIFO con prioridades entre 1 y 99
+    Una tarea de esta política se ejecutará hasta que se bloquee por E/S, sea expropiada por una tarea con mayor prioridad o ceda la CPU
