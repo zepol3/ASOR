@@ -1,0 +1,161 @@
+PS(1)                                                                      User Commands                                                                      PS(1)
+
+NAME
+       ps - report a snapshot of the current processes.
+
+SYNOPSIS
+       ps [options]
+
+DESCRIPTION
+       ps displays information about a selection of the active processes.  If you want a repetitive update of the selection and the displayed information, use
+       top(1) instead.
+
+EXAMPLES
+       To see every process on the system using standard syntax:
+          ps -e
+          ps -ef
+          ps -eF
+          ps -ely
+
+       To see every process on the system using BSD syntax:
+          ps ax
+          ps axu
+
+       To print a process tree:
+          ps -ejH
+          ps axjf
+
+       To get info about threads:
+          ps -eLf
+          ps axms
+
+       To get security info:
+          ps -eo euser,ruser,suser,fuser,f,comm,label
+          ps axZ
+          ps -eM
+
+       To see every process running as root (real & effective ID) in user format:
+          ps -U root -u root u
+
+       To see every process with a user-defined format:
+          ps -eo pid,tid,class,rtprio,ni,pri,psr,pcpu,stat,wchan:14,comm
+          ps axo stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm
+          ps -Ao pid,tt,user,fname,tmout,f,wchan
+
+       Print only the process IDs of syslogd:
+          ps -C syslogd -o pid=
+
+       Print only the name of PID 42:
+          ps -q 42 -o comm=
+
+SIMPLE PROCESS SELECTION
+       a      Lift the BSD-style "only yourself" restriction, which is imposed upon the set of all processes when some BSD-style (without "-") options are used or
+              when the ps personality setting is BSD-like.  The set of processes selected in this manner is in addition to the set of processes selected by other
+              means.  An alternate description is that this option causes ps to list all processes with a terminal (tty), or to list all processes when used
+              together with the x option.
+
+       -A     Select all processes.  Identical to -e.
+
+       -a     Select all processes except both session leaders (see getsid(2)) and processes not associated with a terminal.
+
+       -d     Select all processes except session leaders.
+
+       --deselect
+              Select all processes except those that fulfill the specified conditions (negates the selection).  Identical to -N.
+
+       -e     Select all processes.  Identical to -A.
+
+       g      Really all, even session leaders.  This flag is obsolete and may be discontinued in a future release.  It is normally implied by the a flag, and is
+              only useful when operating in the sunos4 personality.
+
+       -N     Select all processes except those that fulfill the specified conditions (negates the selection).  Identical to --deselect.
+
+       T      Select all processes associated with this terminal.  Identical to the t option without any argument.
+
+       r      Restrict the selection to only running processes.
+
+       x      Lift the BSD-style "must have a tty" restriction, which is imposed upon the set of all processes when some BSD-style (without "-") options are used
+              or when the ps personality setting is BSD-like.  The set of processes selected in this manner is in addition to the set of processes selected by
+              other means.  An alternate description is that this option causes ps to list all processes owned by you (same EUID as ps), or to list all processes
+              when used together with the a option.
+
+OUTPUT FORMAT CONTROL
+       These options are used to choose the information displayed by ps.  The output may differ by personality.
+
+       -c     Show different scheduler information for the -l option.
+
+       --context
+              Display security context format (for SELinux).
+
+       -f     Do full-format listing.  This option can be combined with many other UNIX-style options to add additional columns.  It also causes the command
+              arguments to be printed.  When used with -L, the NLWP (number of threads) and LWP (thread ID) columns will be added.  See the c option, the format
+              keyword args, and the format keyword comm.
+
+       -F     Extra full format.  See the -f option, which -F implies.
+
+       --format format
+              user-defined format.  Identical to -o and o.
+
+       j      BSD job control format.
+
+       -j     Jobs format.
+
+       l      Display BSD long format.
+
+       -l     Long format.  The -y option is often useful with this.
+
+       -M     Add a column of security data.  Identical to Z (for SELinux).
+
+
+
+
+
+OUTPUT
+/* Mostrar todos los procesos del usuario actual en formato extendido.*/
+
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-3$ ps -F
+UID        PID  PPID  C    SZ   RSS PSR STIME TTY          TIME CMD
+alvaro    3225  3224  0  2543  5296   3 11:16 pts/1    00:00:00 -bash
+alvaro    3247  3225  0  2650  3304   0 11:17 pts/1    00:00:00 ps -F
+
+
+/*Mostrar los procesos del sistema, incluyendo el identificador del proceso, el identificador del grupo de procesos,
+el identificador de sesión, el estado y el comando con todos sus argumentos.*/
+
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-3$ ps -eF
+UID        PID  PPID  C    SZ   RSS PSR STIME TTY          TIME CMD
+root         1     0  1   351   960   1 10:58 ?        00:00:13 /init
+root        71     1  0   224    80   3 11:01 ?        00:00:00 /init
+root        72    71  0   224    80   1 11:01 ?        00:00:00 /init
+alvaro      73    72  0  2543  5240   0 11:01 pts/0    00:00:00 -bash
+alvaro    2917    73  0  2194  3804   1 11:12 pts/0    00:00:00 man ps
+alvaro    2927  2917  0  1965  2904   3 11:12 pts/0    00:00:00 pager
+root      3223     1  0   351   532   3 11:16 ?        00:00:00 /init
+root      3224  3223  0   351   532   0 11:16 ?        00:00:00 /init
+alvaro    3225  3224  0  2543  5296   0 11:16 pts/1    00:00:00 -bash
+alvaro    3539  3225  0  2650  3244   3 11:18 pts/1    00:00:00 ps -eF
+
+
+-Observar el identificador de proceso, grupo de procesos y sesión de los procesos. 
+¿Qué identificadores comparten la shell y los programas que se ejecutan en ella? 
+¿Cuál es el identificador de grupo de procesos cuando se crea un nuevo proceso?
+
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-3$ ps -eo uid,pid,pgid,sid,comm
+  UID   PID  PGID   SID COMMAND
+    0     1     0     0 init
+    0    71    71    71 init
+    0    72    71    71 init
+ 1000    73    73    73 bash        <-----shell
+ 1000  2917  2917    73 man
+ 1000  2927  2917    73 pager
+    0  3223  3223  3223 init
+    0  3224  3223  3223 init
+ 1000  3225  3225  3225 bash        <-----shell
+ 1000  5150  5150  3225 ps
+
+
+-¿Qué identificadores comparten la shell y los programas que se ejecutan en ella? 
+    La shell comparte todos los sid con los procesos que se ejecutan en ella
+
+-¿Cuál es el identificador de grupo de procesos cuando se crea un nuevo proceso?
+    Cuando se crea un proceso nuevo el PGID es igual al PID
