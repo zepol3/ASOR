@@ -56,9 +56,7 @@ int main(int argc, char **argv){
             return -1;
         }
         dup2(filerr,2);
-
-        
-        
+       
         if(execvp(argv[1], argv +1) == -1){
             perror("Error en execvp al ejecutar el comando");
             return -1;
