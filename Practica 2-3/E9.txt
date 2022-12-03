@@ -1,0 +1,42 @@
+KILL(1)                                                                         User Commands                                                                        KILL(1)
+
+NAME
+       kill - send a signal to a process
+
+SYNOPSIS
+       kill [options] <pid> [...]
+
+DESCRIPTION
+       The default signal for kill is TERM.  Use -l or -L to list available signals.  Particularly useful signals include HUP, INT, KILL, STOP, CONT, and 0.  Alternate sig‐
+       nals may be specified in three ways: -9, -SIGKILL or -KILL.  Negative PID values may be used to choose whole process groups; see the PGID column in ps  command  out‐
+       put.  A PID of -1 is special; it indicates all processes except the kill process itself and init.
+
+OPTIONS
+       <pid> [...]
+              Send signal to every <pid> listed.
+
+       -<signal>
+       -s <signal>
+       --signal <signal>
+              Specify the signal to be sent.  The signal can be specified by using name or number.  The behavior of signals is explained in signal(7) manual page.
+
+       -l, --list [signal]
+              List signal names.  This option has optional argument, which will convert signal number to signal name, or other way round.
+
+       -L, --table
+              List signal names in a nice table.
+
+       NOTES  Your shell (command line interpreter) may have a built-in kill command.  You may need to run the command described here as /bin/kill to solve the conflict.
+
+EXAMPLES
+       kill -9 -1
+              Kill all processes you can kill.
+
+       kill -l 11
+              Translate number 11 into a signal name.
+
+       kill -L
+              List the available signal choices in a nice table.
+
+       kill 123 543 2341 3453
+              Send the default signal, SIGTERM, to all those processes.
