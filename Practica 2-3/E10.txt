@@ -1,0 +1,33 @@
+NO FUNCIONA NINGUN COMANDO 
+(base) alvaro@PORTATIL-ALVARO:~$ kill -s 11
+kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]
+(base) alvaro@PORTATIL-ALVARO:~$ kill -s SIGSEGV
+kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]
+(base) alvaro@PORTATIL-ALVARO:~$ kill -L SIGSEGV
+11
+(base) alvaro@PORTATIL-ALVARO:~$ kill -l SIGSEGV
+11
+(base) alvaro@PORTATIL-ALVARO:~$ kill -l 11
+SEGV
+(base) alvaro@PORTATIL-ALVARO:~$ kill -s segv
+kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]
+(base) alvaro@PORTATIL-ALVARO:~$ kill 0 -s 11
+-bash: kill: -s: arguments must be process or job IDs
+(base) alvaro@PORTATIL-ALVARO:~$ kill 11 -s 0
+-bash: kill: -s: arguments must be process or job IDs
+(base) alvaro@PORTATIL-ALVARO:~$ kill 11
+(base) alvaro@PORTATIL-ALVARO:~$ kill 1
+-bash: kill: (1) - Operation not permitted
+(base) alvaro@PORTATIL-ALVARO:~$ kill 2
+-bash: kill: (2) - No such process
+(base) alvaro@PORTATIL-ALVARO:~$ kill 3
+-bash: kill: (3) - No such process
+(base) alvaro@PORTATIL-ALVARO:~$ kill 4
+-bash: kill: (4) - No such process
+(base) alvaro@PORTATIL-ALVARO:~$ kill 0 --signal 1
+-bash: kill: --signal: arguments must be process or job IDs
+-bash: kill: (1) - Operation not permitted
+(base) alvaro@PORTATIL-ALVARO:~$ kill -1 --signal 1
+-bash: kill: --signal: arguments must be process or job IDs
+-bash: kill: (1) - Operation not permitted
+(base) alvaro@PORTATIL-ALVARO:~$
