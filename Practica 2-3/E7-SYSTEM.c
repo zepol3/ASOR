@@ -1,25 +1,70 @@
 
 #include <unistd.h>
 #include <stdlib.h>
-
+#include <errno.h>
+#include <stdio.h>
+#include <string.h>
 
 /*VERSION SYSTEM*/
-int main(int argcn char **argv){
+int main(int argc, char **argv){
 
        if(argc < 2){
               perror("Numero invalido de argumentos\n");
               return -1;
        }
        //concateno las entradas de argv desde [1] en adelante y eso se lo paso a system
-       int system(argv);
+       int tam = 0;
+       for(int x = 0; x < argc; x++){
+              tam += strlen(argv[x]);
+       }
 
+       char comando[tam];
+       sprintf(comando,"%s",argv[1]);
+       for(int x = 2; x < argc; x++){
+              sprintf(comando, "%s %s", comando, argv[x]);
+       }
+       if(system(comando) == -1){
+              perror("Error en system  al ejecutar el comando");
+              return -1;
+       }
+       printf("El comando terminó de ejecutarse\n");
        return 0;
 }
 
-
-
-
-
+/*ps -el y "ps -el"  tienen el mismo output*/
+/*OUTPUT ps -el
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-3$ gcc -o E7-s E7-SYSTEM.c
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-3$ ./E7-s ps -el
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0     1     0  0  80   0 -   450 -      ?        00:00:48 init
+5 S     0     9     1  0  80   0 -   224 -      ?        00:00:00 init
+1 S     0    10     9  0  80   0 -   224 -      ?        00:00:00 init
+4 S  1000    11    10  0  80   0 -  2575 do_wai pts/0    00:00:00 bash
+5 S     0  6439     1  0  80   0 -   427 -      ?        00:00:00 init
+1 S     0  6440  6439  0  80   0 -   427 -      ?        00:00:00 init
+4 S  1000  6441  6440  0  80   0 -  2510 do_wai pts/1    00:00:00 bash
+0 S  1000 13226  6441  0  80   0 -  2236 do_wai pts/1    00:00:00 man
+0 S  1000 13236 13226  0  80   0 -  1900 -      pts/1    00:00:00 pager
+0 S  1000 13610    11  0  80   0 -   590 do_wai pts/0    00:00:00 E7-s
+0 S  1000 13611 13610  0  80   0 -   653 do_wai pts/0    00:00:00 sh
+0 R  1000 13612 13611  0  80   0 -  2630 -      pts/0    00:00:00 ps
+El comando terminó de ejecutarse*/
+/*OUTPUT “ps -el”
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-3$ ./E7-s "ps -el"
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0     1     0  0  80   0 -   450 -      ?        00:00:49 init
+5 S     0     9     1  0  80   0 -   224 -      ?        00:00:00 init
+1 S     0    10     9  0  80   0 -   224 -      ?        00:00:00 init
+4 S  1000    11    10  0  80   0 -  2575 do_wai pts/0    00:00:00 bash
+5 S     0  6439     1  0  80   0 -   427 -      ?        00:00:00 init
+1 S     0  6440  6439  0  80   0 -   427 -      ?        00:00:00 init
+4 S  1000  6441  6440  0  80   0 -  2510 do_wai pts/1    00:00:00 bash
+0 S  1000 13226  6441  0  80   0 -  2236 do_wai pts/1    00:00:00 man
+0 S  1000 13236 13226  0  80   0 -  1900 -      pts/1    00:00:00 pager
+0 S  1000 13904    11  0  80   0 -   590 do_wai pts/0    00:00:00 E7-s
+0 S  1000 13905 13904  0  80   0 -   653 do_wai pts/0    00:00:00 sh
+0 R  1000 13906 13905  0  80   0 -  2630 -      pts/0    00:00:00 ps
+El comando terminó de ejecutarse*/
 
 
 /*
