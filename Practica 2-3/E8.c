@@ -10,7 +10,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int main(int argc, char **argv){
+int main(int argc, char *argv[]){
 
     if(argc < 2){
         perror("Numero invalido de argumentos\n");
