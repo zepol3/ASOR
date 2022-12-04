@@ -19,7 +19,7 @@ int main(){
         return -1;
     }
 
-    if(sigaddset(&senal, SIGSTOP) == -1){//añade una señal a un conjunto
+    if(sigaddset(&senal, SIGTSTP) == -1){//añade una señal a un conjunto
         perror("error al añadir la señal SIGTSTP al conjunto\n");
         return -1;
     }
@@ -47,10 +47,10 @@ int main(){
         printf("recibido SIGINT\n");
     }
     
-    if(sigismember(&pending, SIGSTOP) == -1){//comprueba si una señal pertenece a un conjunto
+    if(sigismember(&pending, SIGTSTP) == -1){//comprueba si una señal pertenece a un conjunto
         printf("recibido SIGTSTP\n");
         //al recibir la señal SIGTSTP, procedemos a desbloquearla
-        if(sigdelset(&senal, SIGSTOP) == -1){// elimina una señal de un conjunto
+        if(sigdelset(&senal, SIGTSTP) == -1){// elimina una señal de un conjunto
             perror("error al liberar la señal\n");
             return -1;
         }
@@ -60,6 +60,6 @@ int main(){
             return -1;
         }
     }
-    printf("se ha desbloquedado SIGSTOP\n");
+    printf("se ha desbloquedado SIGTSTP\n");
     return 0;
 }
