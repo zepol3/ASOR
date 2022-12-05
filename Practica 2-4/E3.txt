@@ -1,0 +1,22 @@
+terminal 1
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-4$ mkfifo tuberia
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-4$ ls -l
+total 8
+-rw-r--r-- 1 alvaro alvaro  927 Dec  5 10:04 E1.c
+-rw-r--r-- 1 alvaro alvaro 2363 Dec  5 10:45 E2.c
+-rw-r--r-- 1 alvaro alvaro    0 Dec  5 11:07 E3.c
+prw-r--r-- 1 alvaro alvaro    0 Dec  5 18:41 tuberia
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-4$ stat tuberia
+  File: tuberia
+  Size: 0               Blocks: 0          IO Block: 4096   fifo
+Device: 810h/2064d      Inode: 212662      Links: 1
+Access: (0644/prw-r--r--)  Uid: ( 1000/  alvaro)   Gid: ( 1000/  alvaro)
+Access: 2022-12-05 18:41:57.543097300 +0100
+Modify: 2022-12-05 18:41:57.543097300 +0100
+Change: 2022-12-05 18:41:57.543097300 +0100
+ Birth: -
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-4$ echo "pruebaaaa" > tuberia
+
+terminal 2
+alvaro@PORTATIL-ALVARO:~/ASOR/Practica 2-4$ cat tuberia
+pruebaaaa
