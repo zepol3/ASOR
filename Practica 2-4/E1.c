@@ -28,17 +28,17 @@ int main(int argc, char *argv[]){
     else if (pid == 0){//hijo
 
         printf("Hijo: pid = %d, ppid = %d\n", getpid(),getppid());
-        close(file[0]);
-        dup2(file[1], 1);
-		close(file[1]);
-        execlp(argv[1], argv[1], argv[2], NULL);
-    }
-    else{//padre
-        printf("Padre: pid = %d\n", getpid());
         close(file[1]);
         dup2(file[0], 0);
 		close(file[0]);
         execlp(argv[3], argv[3], argv[4], NULL);
+    }
+    else{//padre
+        printf("Padre: pid = %d\n", getpid());
+        close(file[0]);
+        dup2(file[1], 1);
+		close(file[1]);
+        execlp(argv[1], argv[1], argv[2], NULL);
     }
     return 0;
 }
