@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <string.h>
+#include <time.h>
 
 #define BUFFER 2
 #define MESSAGE 128
@@ -40,7 +41,7 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
-    int sockett = socket(resultado->ai_family, resultado->ai_socktype, resultado->ai_ai_protocol);
+    int sockett = socket(resultado->ai_family, resultado->ai_socktype, resultado->ai_protocol);
 
     if(sockett == -1){
         perror("Error al crear socket\n");
@@ -72,23 +73,41 @@ int main(int argc, char *argv[]){
 		buff[l - 1] = '\0';
 
         getnameinfo((struct sockaddr *) &client_addr, client_addrlen, host, NI_MAXHOST, serv, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
-        printf("hemos recibido %ld bytes", l);
+        printf("hemos recibido %ld bytes de %s por el puerto %s\n", l, host, serv);
 
         tiempo = time(NULL);
-        tm = localtiem(&t);
+        tm = localtime(&tiempo);
 
-        if(buff == "t"){
-
-        }
-
-        else if(buff == "d"){
+        if(buff[0] == 't'){
             
+			tiempo_bytes = strftime(mensage, MESSAGE, "%T", tm);
+			mensage[tiempo_bytes] = '\n';
+			mensage[tiempo_bytes + 1] = '\0';
+			
+			if (sendto(sockett, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
+			{
+				printf("sendto()\n");
+				return -1;
+			}
         }
 
-        else if(buff == "q"){
-            
+        else if(buff[0] == 'd'){
+            tiempo_bytes = strftime(mensage, MESSAGE, "%F", tm);
+			mensage[tiempo_bytes] = '\n';
+			mensage[tiempo_bytes + 1] = '\0';
+			
+			if (sendto(sockett, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
+			{
+				printf("sendto()\n");
+				return -1;
+			}
         }
 
+        else if(buff[0] == 'q'){
+            printf("Saliendo...\n");
+			
+			return 0;
+        }
         else{
             printf("comando no valido\n");
         }
@@ -102,4 +121,4 @@ int main(int argc, char *argv[]){
 /*
 dos terminales 
 netcat
-ss -uan/
+ss -uan*/
