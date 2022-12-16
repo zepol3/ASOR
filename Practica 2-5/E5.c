@@ -14,6 +14,10 @@
 #define MESSAGE 128
 #define LISTEN_BACKLOG 50
 
+void handler(int senal){
+    wait(NULL);
+}
+
 int main(int argc, char *argv[]){
     
     if(argc < 3){
@@ -21,6 +25,17 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
+    sigset_t set;
+    sigemptyset(&set);
+    sigaddset(&set, SIGTERM);
+
+    struct sigaction sig;
+    sig.sa_handler = handler;
+
+    if(sigaction(SIGTERM , &sig, NULL) == -1){
+        perror("error al cambiarl el controlador para SIGTERM ");
+            return -1;
+    }
 
     struct addrinfo hints;
     struct addrinfo *resultado;
@@ -103,6 +118,7 @@ int main(int argc, char *argv[]){
                     printf("hemos recibido %d bytes por stdin\n", leidos);
                 }
                 else{//si el selector esta apuntando al socket
+    
                     l = recvfrom(sockett, buff, BUFFER, 0, (struct sockaddr *) &client_addr, &client_addrlen);
                     buff[l - 1] = '\0';
 
@@ -123,6 +139,10 @@ int main(int argc, char *argv[]){
                         printf("%s\n", mensage);
                     }
                     else{
+                        if(connect(sockett, (struct sockaddr *) &client_addr, &client_addrlen) == -1){
+                            perror("error al conectar con el socket en t");
+                            return -1;
+                        }
                         if (sendto(sockett, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
                         {
                             printf("sendto()\n");
@@ -139,6 +159,10 @@ int main(int argc, char *argv[]){
                         printf("%s\n", mensage);
                     }
                     else{
+                        if(connect(sockett, (struct sockaddr *) &client_addr, &client_addrlen) == -1){
+                            perror("error al conectar con el socket en t");
+                            return -1;
+                        }
                         if (sendto(sockett, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
                         {
                             printf("sendto()\n");
