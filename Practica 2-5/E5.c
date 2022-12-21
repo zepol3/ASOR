@@ -8,11 +8,14 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <string.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <time.h>
 
 #define BUFFER 2
 #define MESSAGE 128
-#define LISTEN_BACKLOG 50
+#define LISTEN_BACKLOG 5
 
 void handler(int senal){
     wait(NULL);
@@ -69,14 +72,15 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
-    if(listen(sockett, LISTEN_BACKLOG) == -1){
-        perror("error en el listen\n");
+    freeaddrinfo(resultado);
+    
+    int lise = listen(sockett, LISTEN_BACKLOG);
+    if(lise == -1){
+        perror("Error en listen\n");
         return -1;
     }
 
-    freeaddrinfo(resultado);
-
-    while(1){///cuantas veces tengo que ejecutar esto??
+   for (int i = 0; i < 5; i++){///cuantas veces tengo que ejecutar esto??
         pid_t pid = fork();
         
         if(pid < 0){
@@ -90,9 +94,10 @@ int main(int argc, char *argv[]){
 
             struct sockaddr_storage client_addr;
             socklen_t client_addrlen = sizeof(client_addr);
-
-            if(accept(sockett, (struct sockaddr *) &client_addr, &client_addrlen) == -1){
-                perror("Error al aceptar al hijo %s\n", getpid());
+            
+            int cliente = accept(sockett, (struct sockaddr *) &client_addr, &client_addrlen);    
+            if(cliente == -1){
+                printf("Error al aceptar al hijo %d\n", getpid());
                 return -1;
             }
 
@@ -108,8 +113,8 @@ int main(int argc, char *argv[]){
             while(1){
                 FD_ZERO(&selector);//inicializo el selector a vacio
                 FD_SET(0, &selector); //inluyo stdin en el selector
-                FD_SET(sockett, &selector);//incluyo el socket en el selector
-                if(select(sockett + 1, &selector, NULL, NULL, NULL) == -1){
+                FD_SET(cliente, &selector);//incluyo el socket en el selector
+                if(select(cliente + 1, &selector, NULL, NULL, NULL) == -1){
                     perror("error al abrir el select\n");
                     return -1;
                 }
@@ -119,11 +124,11 @@ int main(int argc, char *argv[]){
                 }
                 else{//si el selector esta apuntando al socket
     
-                    l = recvfrom(sockett, buff, BUFFER, 0, (struct sockaddr *) &client_addr, &client_addrlen);
+                    l = recvfrom(cliente, buff, BUFFER, 0, (struct sockaddr *) &client_addr, &client_addrlen);
                     buff[l - 1] = '\0';
 
                     getnameinfo((struct sockaddr *) &client_addr, client_addrlen, host, NI_MAXHOST, serv, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
-                    printf("hemos recibido %ld bytes de %s por el puerto %s, pid Hijo = %s\n", l, host, serv, getpid());
+                    printf("hemos recibido %ld bytes de %s por el puerto %s, pid Hijo = %d\n", l, host, serv, getpid());
                 }
 
                 tiempo = time(NULL);
@@ -139,11 +144,7 @@ int main(int argc, char *argv[]){
                         printf("%s\n", mensage);
                     }
                     else{
-                        if(connect(sockett, (struct sockaddr *) &client_addr, &client_addrlen) == -1){
-                            perror("error al conectar con el socket en t");
-                            return -1;
-                        }
-                        if (sendto(sockett, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
+                        if (sendto(cliente, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
                         {
                             printf("sendto()\n");
                             return -1;
@@ -159,11 +160,7 @@ int main(int argc, char *argv[]){
                         printf("%s\n", mensage);
                     }
                     else{
-                        if(connect(sockett, (struct sockaddr *) &client_addr, &client_addrlen) == -1){
-                            perror("error al conectar con el socket en t");
-                            return -1;
-                        }
-                        if (sendto(sockett, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
+                        if (sendto(cliente, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
                         {
                             printf("sendto()\n");
                             return -1;
@@ -182,7 +179,7 @@ int main(int argc, char *argv[]){
     }
         }
         else{//padre
-
+            signal(SIGTERM, handler);
         }
     }
    
