@@ -15,29 +15,12 @@
 
 #define BUFFER 2
 #define MESSAGE 128
-#define LISTEN_BACKLOG 5
-
-void handler(int senal){
-    wait(NULL);
-}
 
 int main(int argc, char *argv[]){
     
     if(argc < 3){
         perror("Numero invalido de argumentos\n");
         return -1;
-    }
-
-    sigset_t set;
-    sigemptyset(&set);
-    sigaddset(&set, SIGTERM);
-
-    struct sigaction sig;
-    sig.sa_handler = handler;
-
-    if(sigaction(SIGTERM , &sig, NULL) == -1){
-        perror("error al cambiarl el controlador para SIGTERM ");
-            return -1;
     }
 
     struct addrinfo hints;
@@ -74,12 +57,6 @@ int main(int argc, char *argv[]){
 
     freeaddrinfo(resultado);
     
-    int lise = listen(sockett, LISTEN_BACKLOG);
-    if(lise == -1){
-        perror("Error en listen\n");
-        return -1;
-    }
-
    for (int i = 0; i < 5; i++){///cuantas veces tengo que ejecutar esto??
         pid_t pid = fork();
         
@@ -94,12 +71,6 @@ int main(int argc, char *argv[]){
 
             struct sockaddr_storage client_addr;
             socklen_t client_addrlen = sizeof(client_addr);
-            
-            int cliente = accept(sockett, (struct sockaddr *) &client_addr, &client_addrlen);    
-            if(cliente == -1){
-                printf("Error al aceptar al hijo %d\n", getpid());
-                return -1;
-            }
 
             size_t l;
             time_t tiempo;
@@ -113,8 +84,8 @@ int main(int argc, char *argv[]){
             while(1){
                 FD_ZERO(&selector);//inicializo el selector a vacio
                 FD_SET(0, &selector); //inluyo stdin en el selector
-                FD_SET(cliente, &selector);//incluyo el socket en el selector
-                if(select(cliente + 1, &selector, NULL, NULL, NULL) == -1){
+                FD_SET(sockett, &selector);//incluyo el socket en el selector
+                if(select(sockett + 1, &selector, NULL, NULL, NULL) == -1){
                     perror("error al abrir el select\n");
                     return -1;
                 }
@@ -124,7 +95,7 @@ int main(int argc, char *argv[]){
                 }
                 else{//si el selector esta apuntando al socket
     
-                    l = recvfrom(cliente, buff, BUFFER, 0, (struct sockaddr *) &client_addr, &client_addrlen);
+                    l = recvfrom(sockett, buff, BUFFER, 0, (struct sockaddr *) &client_addr, &client_addrlen);
                     buff[l - 1] = '\0';
 
                     getnameinfo((struct sockaddr *) &client_addr, client_addrlen, host, NI_MAXHOST, serv, NI_MAXSERV, NI_NUMERICHOST | NI_NUMERICSERV);
@@ -144,7 +115,7 @@ int main(int argc, char *argv[]){
                         printf("%s\n", mensage);
                     }
                     else{
-                        if (sendto(cliente, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
+                        if (sendto(sockett, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
                         {
                             printf("sendto()\n");
                             return -1;
@@ -160,26 +131,25 @@ int main(int argc, char *argv[]){
                         printf("%s\n", mensage);
                     }
                     else{
-                        if (sendto(cliente, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
+                        if (sendto(sockett, mensage, tiempo_bytes + 2, 0, (struct sockaddr *) &client_addr, client_addrlen) == -1)
                         {
                             printf("sendto()\n");
                             return -1;
                         }
                     }
                 }
-
                 else if(buff[0] == 'q'){
                     printf("Saliendo...\n");
-                    
+                    kill(0, SIGTERM);
                     return 0;
                 }
                 else{
                     printf("comando no valido\n");
                 }
-    }
+            }
         }
         else{//padre
-            signal(SIGTERM, handler);
+           wait(NULL);
         }
     }
    
