@@ -1,0 +1,27 @@
+servidor TCP
+    memset()
+    sockt_tipe = SOCK_STREAM
+    getaddrinfo()
+    socket()
+    bind()
+
+    freeaddrinfo()
+
+    listen()
+    accept()
+
+    recv()-return numero de bits leidos. if ==0 eof
+    send()
+
+servidor UDP
+    memset()
+    sockt_tipe = SOCK_DGRAM
+    getaddrinfo()
+    socket()
+    bind()
+    
+    freeaddrinfo()
+
+    recvfrom()
+    getnameinfo()
+    sendto()
